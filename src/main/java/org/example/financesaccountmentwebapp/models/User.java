@@ -1,6 +1,7 @@
 package org.example.financesaccountmentwebapp.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class User {
     public List<Transaction> getTransactions() {
         return transactions;
     }
+
+
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
