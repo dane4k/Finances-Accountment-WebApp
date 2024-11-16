@@ -3,6 +3,7 @@
 <head>
     <title>Домашняя страница</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <style>
@@ -12,12 +13,25 @@
 
     .h1home {
         margin-top: 50px;
-        font-family: Bell MT sans-serif
+        font-family: Bell MT sans-serif;
     }
 
-    .button-container {
-        margin-top: 70px;
+    .charts-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 50px;
     }
+
+    .chart-wrapper {
+        width: 45%;
+        max-width: 500px;
+    }
+
+    canvas {
+        max-width: 100%;
+        max-height: 400px;
+    }
+
 </style>
 <nav class="navbar">
     <a href="#">
@@ -38,6 +52,87 @@
     <a class="button" th:href="@{/transactions}">Добавить доходы или расходы</a>
 </div>
 
+<div class="charts-container">
+    <div class="chart-wrapper">
+        <canvas id="incomeChart"></canvas>
+    </div>
+    <div class="chart-wrapper">
+        <canvas id="expenseChart"></canvas>
+    </div>
+</div>
 
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const incomeData = /*[[${incomeData}]]*/ {};
+        const expenseData = /*[[${expenseData}]]*/ {};
+
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 200);
+            const g = Math.floor(Math.random() * 200);
+            const b = Math.floor(Math.random() * 200);
+            return `rgba(${r}, ${g}, ${b}, 0.7)`;
+        }
+
+        function createPieChart(elementId, data, title, emptyMessage) {
+            const ctx = document.getElementById(elementId).getContext('2d');
+
+            if (Object.keys(data).length === 0) {
+                ctx.font = '20px Arial';
+                ctx.fillStyle = 'gray';
+                ctx.textAlign = 'center';
+                ctx.fillText(emptyMessage, ctx.canvas.width / 2, ctx.canvas.height / 2);
+                return;
+            }
+
+            const backgroundColors = Object.keys(data).map(() => getRandomColor());
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: backgroundColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: title,
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        createPieChart(
+            'incomeChart',
+            incomeData,
+            'Доходы за последние 30 дней',
+            'Нет данных о доходах'
+        );
+
+        createPieChart(
+            'expenseChart',
+            expenseData,
+            'Расходы за последние 30 дней',
+            'Нет данных о расходах'
+        );
+    });
+</script>
 </body>
 </html>

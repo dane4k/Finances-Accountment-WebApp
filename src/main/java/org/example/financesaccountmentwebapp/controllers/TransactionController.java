@@ -65,7 +65,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public String addTransaction(@RequestParam Float amount,
+    public String addTransaction(@RequestParam Double amount,
                                  @RequestParam LocalDate date,
                                  @RequestParam Boolean income,
                                  @RequestParam("category.id") Long categoryId,

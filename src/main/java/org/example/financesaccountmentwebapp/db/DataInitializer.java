@@ -1,4 +1,4 @@
-package org.example.financesaccountmentwebapp.dbService;
+package org.example.financesaccountmentwebapp.db;
 
 import org.example.financesaccountmentwebapp.models.Category;
 import org.example.financesaccountmentwebapp.repositories.CategoryRepository;
