@@ -12,11 +12,11 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     private LocalDate date;
@@ -24,6 +24,10 @@ public class Transaction {
     private Float amount;
 
     private Boolean income;
+
+    public Transaction() {
+
+    }
 
     public Long getId() {
         return id;

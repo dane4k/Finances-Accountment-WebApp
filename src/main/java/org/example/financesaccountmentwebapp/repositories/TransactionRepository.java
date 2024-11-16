@@ -1,7 +1,12 @@
 package org.example.financesaccountmentwebapp.repositories;
 
+import org.example.financesaccountmentwebapp.models.Transaction;
 import org.example.financesaccountmentwebapp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TransactionRepository extends JpaRepository<User, Long> {
+import java.util.List;
+
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    List<Transaction> findByUser(User user);
+
 }

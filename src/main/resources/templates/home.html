@@ -2,10 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Домашняя страница</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
 </head>
 <body>
-<nav>
+<style>
+    body {
+        background-image: url('/images/mainPageBackground.png');
+    }
+
+    .h1home {
+        margin-top: 50px;
+        font-family: Bell MT sans-serif
+    }
+
+    .button-container {
+        margin-top: 70px;
+    }
+</style>
+<nav class="navbar">
     <a href="#">
         <img src="/images/logo.svg" width="75" height="75" alt="">
     </a>
@@ -17,8 +31,13 @@
         </form>
     </div>
 </nav>
-<h1>Добро пожаловать, <span th:text="${user.username}"></span>!</h1>
-<p>Ваши данные:</p>
+<h1 class="h1home">Добро пожаловать, <span th:text="${user.username}"></span>!</h1>
+
+<div class="button-container">
+    <a class="button" th:href="@{/categories}">Категории расходов и доходов</a>
+    <a class="button" th:href="@{/transactions}">Добавить доходы или расходы</a>
+</div>
+
 
 </body>
 </html>

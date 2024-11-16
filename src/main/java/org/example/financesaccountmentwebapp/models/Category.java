@@ -13,12 +13,10 @@ public class Category {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-
-    @OneToMany
-    @JoinColumn(name="category")
+    @OneToMany(mappedBy = "category")
     private List<Transaction> transactions;
 
 

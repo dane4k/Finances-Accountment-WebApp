@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Транзакции</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<style>
+    body {
+        background-image: url('/images/tax.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<body>
+<a href="/home" class="btn-main">На главную</a>
+
+<div class="container">
+    <h1>Транзакции</h1>
+
+    <button class="toggle-form" onclick="toggleForm()">Добавить доход или расход</button>
+    <form action="/transactions" method="POST" class="post-form" id="transactionForm" style="display:none;">
+        <input type="number" name="amount" placeholder="Сумма" required>
+        <input type="date" name="date" required>
+
+        <select name="income" required>
+            <option value="">Тип</option>
+            <option value="true">Доходы</option>
+            <option value="false">Расходы</option>
+        </select>
+
+        <select name="category.id" required>
+            <option value="">Выберите категорию</option>
+            <th:block th:each="category : ${categories}">
+                <option th:value="${category.id}" th:text="${category.name}"></option>
+            </th:block>
+        </select>
+        <button type="submitAdd">Добавить</button>
+    </form>
+
+    <div id="filterOptions">
+        <button onclick="filterTable('all')">Все</button>
+        <button onclick="filterTable('income')">Доходы</button>
+        <button onclick="filterTable('expense')">Расходы</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Сумма</th>
+            <th>Дата</th>
+            <th onclick="toggleFilter()">Тип</th>
+            <th>Категория</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody id="transactionTable">
+        <tr th:each="transaction : ${transactions}" th:class="${transaction.getIncome() ? 'income' : 'expense'}">
+            <td th:text="${transaction.getAmount()}"></td>
+            <td th:text="${transaction.getDate()}"></td>
+            <td th:text="${transaction.getIncome() ? 'Доходы' : 'Расходы'}"></td>
+            <td th:text="${transaction.category.name}"></td>
+            <td>
+                <form action="/transactions/delete/{id}" method="POST"
+                      th:action="@{/transactions/delete/{id}(id=${transaction.getId()})}">
+                    <button type="submitDelete">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    function toggleForm() {
+        const form = document.getElementById('transactionForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function filterTable(type) {
+        const rows = Array.from(document.querySelectorAll('#transactionTable tr'));
+
+        rows.forEach(row => {
+            const typeCell = row.cells[2].textContent;
+            if (type === 'all' || (type === 'income' && typeCell === 'Доходы') || (type === 'expense' && typeCell === 'Расходы')) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -61,7 +61,7 @@ public class AuthController {
     @GetMapping("/logout")
     public String showLogout(HttpSession session) {
         session.invalidate();
-        return "redirect:/register";
+        return "redirect:/login";
     }
 
     @PostMapping("/login")
@@ -77,18 +77,6 @@ public class AuthController {
         }
         session.setAttribute("username", user.getUsername());
         return "redirect:/home";
-    }
-
-    @GetMapping("/home")
-    public String showHomePage(Model model, HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        if (username != null) {
-            User user = userRepository.findByUsername(username);
-            model.addAttribute("user", user);
-        } else {
-            return "redirect:/login";
-        }
-        return "home";
     }
 
 
