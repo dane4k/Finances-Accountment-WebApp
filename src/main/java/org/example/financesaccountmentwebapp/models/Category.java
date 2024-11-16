@@ -12,9 +12,15 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+
     @OneToMany
     @JoinColumn(name="category")
     private List<Transaction> transactions;
+
 
     private String name;
 
@@ -50,5 +56,9 @@ public class Category {
 
     public void setIncome(Boolean income) {
         this.income = income;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

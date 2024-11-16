@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <title>Вход</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .error {
@@ -13,12 +13,8 @@
 <body>
 <div class="container">
     <h2 class="mt-5">Login</h2>
-    <a href="/register" class="btn btn-link">Регистрация</a>
 
     <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
-    <div th:if="${param.logout}" class="alert alert-info">
-        You have been logged out.
-    </div>
 
     <form th:action="@{/login}" method="post" class="mt-4">
         <div class="form-group">
@@ -29,8 +25,11 @@
             <label for="password">Пароль:</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Войти</button>
+        <button type="submit" class="btn btn-success">Войти</button>
     </form>
+    <div class="mt-3">
+        <a href="/register" class="btn btn-primary">Регистрация</a>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

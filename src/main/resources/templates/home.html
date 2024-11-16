@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home Page</title>
+    <title>Домашняя страница</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<h1>Добро пожаловать, <span th:text="${user.username}">User </span>!</h1>
+<nav>
+    <a href="#">
+        <img src="/images/logo.svg" width="75" height="75" alt="">
+    </a>
+    <h1>Система Управления Личными Финансами</h1>
+    <div style="display: flex; align-items: center;">
+        <span class="username" th:text="${user.username}"></span>
+        <form action="#" th:action="@{/logout}" method="get" style="margin-left: 10px;">
+            <button type="submit" class="logout-button">Выйти</button>
+        </form>
+    </div>
+</nav>
+<h1>Добро пожаловать, <span th:text="${user.username}"></span>!</h1>
 <p>Ваши данные:</p>
-<form action="#" th:action="@{/logout}" method="get">
-    <button type="submit">Logout</button>
-</form>
+
 </body>
 </html>
-
