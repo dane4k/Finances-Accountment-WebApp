@@ -6,6 +6,9 @@
 <body>
 <h1>Добро пожаловать, <span th:text="${user.username}">User </span>!</h1>
 <p>Ваши данные:</p>
-
+<form action="#" th:action="@{/logout}" method="get">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>
+
