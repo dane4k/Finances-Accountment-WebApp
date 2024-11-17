@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * контроллер для управления категориями
+ */
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
@@ -26,12 +29,19 @@ public class CategoryController {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    /**
+     * отображает список категорий пользователя
+     *
+     * @param model модель для передачи данных в представление
+     * @param session текущая сессия пользователя
+     * @return страница категорий или страница логина при посещении страницы незалогиненным юзером
+     */
     @GetMapping
     public String printCategories(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         if (username != null) {
             User user = userRepository.findByUsername(username);
-            List<Category> userCategories = categoryRepository.findByUser(user);
+            List<Category> userCategories = categoryRepository.findByUser (user);
             List<Category> generalCategories = categoryRepository.findByUserIsNull();
 
             userCategories.addAll(generalCategories);
@@ -44,6 +54,13 @@ public class CategoryController {
         return "categories";
     }
 
+    /**
+     * добавляет новую категорию для пользователя
+     *
+     * @param name имя категории
+     * @param session текущая сессия пользователя
+     * @return редирект на страницу категорий
+     */
     @PostMapping
     public String addCategory(@RequestParam String name, HttpSession session) {
         String username = (String) session.getAttribute("username");
@@ -51,12 +68,18 @@ public class CategoryController {
             User user = userRepository.findByUsername(username);
             Category category = new Category();
             category.setName(name);
-            category.setUser(user);
+            category.setUser (user);
             categoryRepository.save(category);
         }
         return "redirect:/categories";
     }
 
+    /**
+     * удаляет категорию по id
+     *
+     * @param id id категории для удаления
+     * @return редирект на страницу категорий
+     */
     @PostMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id) {
         categoryRepository.deleteById(id);

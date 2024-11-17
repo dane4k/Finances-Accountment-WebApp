@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Map;
 
+/**
+ * контроллер для управления пользовательским интерфейсом
+ */
 @Controller
 public class UserController {
 
@@ -20,6 +23,13 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * отображает домашнюю страницу
+     *
+     * @param model модель для передачи данных в представление
+     * @param session текущая сессия пользователя
+     * @return домашнаяя страница или страница логина при ошибке
+     */
     @GetMapping("/home")
     public String showHomePage(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");

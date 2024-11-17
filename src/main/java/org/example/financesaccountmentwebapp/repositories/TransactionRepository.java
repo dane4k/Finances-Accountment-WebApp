@@ -6,7 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * интерфейс репозитория для работы с транзакциями
+ */
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findByUser(User user);
 
+    /**
+     * находит транзакции по пользователю
+     *
+     * @param user пользователь
+     * @return список транзакций
+     */
+    List<Transaction> findByUser (User user);
 }

@@ -1,30 +1,34 @@
 package org.example.financesaccountmentwebapp.services;
+
 import org.mindrot.jbcrypt.BCrypt;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//
-//public class PasswordUtil {
-//    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//
-//    public static String hashPassword(String password) {
-//        return encoder.encode(password);
-//    }
-//
-//    public static boolean isCorrect(String password, String hashedPassword) {
-//        return encoder.matches(password, hashedPassword);
-//    }
-//}
-
+/**
+ * утилита для хеширования и проверки пароля
+ */
 public class PasswordUtil {
+
+    /**
+     * хеширует пароль с использованием BCrypt
+     *
+     * @param password пароль для хеширования
+     * @return хешированный пароль
+     */
     public static String hashPassword(String password) {
-        System.out.println("Hashing password: " + password);
+        System.out.println("Хеширование пароля: " + password);
         var result = BCrypt.hashpw(password, BCrypt.gensalt());
-        System.out.println("Hashed password: " + result);
+        System.out.println("Хешированный пароль: " + result);
         return result;
     }
 
+    /**
+     * проверяет, соответствует ли введенный пароль хешированному паролю
+     *
+     * @param password введенный пароль
+     * @param hashedPassword хешированный пароль
+     * @return true, если пароли совпадают, иначе false
+     */
     public static boolean isCorrect(String password, String hashedPassword) {
-        System.out.println("Checking password: " + password + ", hashed password: " + hashedPassword);
+        System.out.println("Проверка пароля: " + password + ", хешированный пароль: " + hashedPassword);
         return BCrypt.checkpw(password, hashedPassword);
     }
 }

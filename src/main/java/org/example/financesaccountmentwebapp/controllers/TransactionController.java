@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * контроллер для управления транзакциями
+ */
 @Controller
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -29,13 +32,21 @@ public class TransactionController {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    /**
+     * отображает таблицу транзакций пользователя
+     *
+     * @param type тип транзакции (доход или расход)
+     * @param model модель для передачи данных в представление
+     * @param session текущая сессия пользователя
+     * @return страница транзакций или логина при отсутствии юзернейма в логине
+     */
     @GetMapping
     public String printTransactions(@RequestParam(required = false) String type, Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
 
         if (username != null) {
             User user = userRepository.findByUsername(username);
-            List<Transaction> userTransactions = transactionRepository.findByUser(user);
+            List<Transaction> userTransactions = transactionRepository.findByUser (user);
 
             if ("true".equals(type)) {
                 userTransactions = userTransactions.stream()
@@ -49,7 +60,7 @@ public class TransactionController {
 
             model.addAttribute("transactions", userTransactions);
 
-            List<Category> userCategories = categoryRepository.findByUser(user);
+            List<Category> userCategories = categoryRepository.findByUser (user);
             List<Category> generalCategories = categoryRepository.findByUserIsNull();
             List<Category> availableCategories = new ArrayList<>(userCategories);
             availableCategories.addAll(generalCategories);
@@ -64,6 +75,16 @@ public class TransactionController {
         return "transactions";
     }
 
+    /**
+     * добавляет новую транзакцию
+     *
+     * @param amount сумма транзакции
+     * @param date дата транзакции
+     * @param income тип транзакции (доход или расход)
+     * @param categoryId идентификатор категории
+     * @param session текущая сессия пользователя
+     * @return редирект на страницу транзакций
+     */
     @PostMapping
     public String addTransaction(@RequestParam Double amount,
                                  @RequestParam LocalDate date,
@@ -77,7 +98,7 @@ public class TransactionController {
 
         String username = (String) session.getAttribute("username");
         User user = userRepository.findByUsername(username);
-        transaction.setUser(user);
+        transaction.setUser (user);
 
         Category category = categoryRepository.findById(categoryId).orElse(null);
         transaction.setCategory(category);
@@ -86,6 +107,12 @@ public class TransactionController {
         return "redirect:/transactions";
     }
 
+    /**
+     * удаляет транзакцию по идентификатору
+     *
+     * @param id идентификатор транзакции для удаления
+     * @return редирект на страницу транзакций
+     */
     @PostMapping("/delete/{id}")
     public String deleteTransaction(@PathVariable Long id) {
         transactionRepository.deleteById(id);

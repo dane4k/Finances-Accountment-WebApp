@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Сервис для работы с диаграммами транзакций
+ */
 @Service
 public class DiagramService {
 
@@ -20,6 +23,12 @@ public class DiagramService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Получает статистику транзакций за последний месяц для указанного пользователя
+     *
+     * @param username имя пользователя
+     * @return карта, содержащая доходы и расходы по категориям
+     */
     public Map<String, Map<String, Double>> getTransactionsStatsForLastMonth(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
@@ -29,7 +38,7 @@ public class DiagramService {
         LocalDate startDate = LocalDate.now().minusMonths(1);
         LocalDate endDate = LocalDate.now().plusDays(1);
 
-        List<Object[]> results = diagramRepository.findTransactionSummaryForUser(
+        List<Object[]> results = diagramRepository.findTransactionSummaryForUser (
                 startDate, endDate, user.getId()
         );
 
@@ -41,9 +50,9 @@ public class DiagramService {
             Double sumAmount = ((Number) result[1]).doubleValue();
             Boolean income = (Boolean) result[2];
 
-            System.out.println("Processing: Category=" + categoryName +
-                    ", Amount=" + sumAmount +
-                    ", Income=" + income);
+            System.out.println("Обработка: Категория=" + categoryName +
+                    ", Сумма=" + sumAmount +
+                    ", Доход=" + income);
 
             if (Boolean.TRUE.equals(income)) {
                 incomeMap.merge(categoryName, sumAmount, Double::sum);
@@ -52,15 +61,13 @@ public class DiagramService {
             }
         }
 
-        System.out.println("Final Income Map: " + incomeMap);
-        System.out.println("Final Expense Map: " + expenseMap);
+        System.out.println("Итоговая карта доходов: " + incomeMap);
+        System.out.println("Итоговая карта расходов: " + expenseMap);
 
         Map<String, Map<String, Double>> resultMap = new HashMap<>();
         resultMap.put("income", incomeMap);
         resultMap.put("expenses", expenseMap);
 
         return resultMap;
-
-
     }
 }
