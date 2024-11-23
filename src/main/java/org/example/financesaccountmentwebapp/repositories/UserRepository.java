@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return пользователь с указанным именем или null, если не найден
      */
     User findByUsername(String username);
+
 }

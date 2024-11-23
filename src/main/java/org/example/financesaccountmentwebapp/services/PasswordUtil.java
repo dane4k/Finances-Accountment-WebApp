@@ -14,9 +14,7 @@ public class PasswordUtil {
      * @return хешированный пароль
      */
     public static String hashPassword(String password) {
-        System.out.println("Хеширование пароля: " + password);
         var result = BCrypt.hashpw(password, BCrypt.gensalt());
-        System.out.println("Хешированный пароль: " + result);
         return result;
     }
 
@@ -28,7 +26,6 @@ public class PasswordUtil {
      * @return true, если пароли совпадают, иначе false
      */
     public static boolean isCorrect(String password, String hashedPassword) {
-        System.out.println("Проверка пароля: " + password + ", хешированный пароль: " + hashedPassword);
         return BCrypt.checkpw(password, hashedPassword);
     }
 }

@@ -25,4 +25,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      * @return список категорий
      */
     List<Category> findByUserIsNull();
+
+    List<Category> findByName(String name);
+
+    List<Category> findByNameAndUser (String name, User user);
+
+
+
 }

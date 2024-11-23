@@ -39,16 +39,11 @@ public class UserController {
 
             Map<String, Map<String, Double>> stats = diagramService.getTransactionsStatsForLastMonth(username);
 
-            System.out.println("FULL CHART DATA: " + stats);
-
             stats.forEach((type, categories) -> {
-                System.out.println(type + " Categories:");
                 categories.forEach((category, amount) -> {
-                    System.out.println(category + ": " + amount);
                 });
             });
 
-            // для фронта чарт жс
             model.addAttribute("incomeData", stats.get("income"));
             model.addAttribute("expenseData", stats.get("expenses"));
             model.addAttribute("chartData", stats);

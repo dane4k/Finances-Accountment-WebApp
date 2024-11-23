@@ -50,19 +50,12 @@ public class DiagramService {
             Double sumAmount = ((Number) result[1]).doubleValue();
             Boolean income = (Boolean) result[2];
 
-            System.out.println("Обработка: Категория=" + categoryName +
-                    ", Сумма=" + sumAmount +
-                    ", Доход=" + income);
-
             if (Boolean.TRUE.equals(income)) {
                 incomeMap.merge(categoryName, sumAmount, Double::sum);
             } else {
                 expenseMap.merge(categoryName, sumAmount, Double::sum);
             }
         }
-
-        System.out.println("Итоговая карта доходов: " + incomeMap);
-        System.out.println("Итоговая карта расходов: " + expenseMap);
 
         Map<String, Map<String, Double>> resultMap = new HashMap<>();
         resultMap.put("income", incomeMap);
